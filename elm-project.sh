@@ -7,6 +7,7 @@ then
     exit 1
 fi
 
+echo "Checking if required tools are available..."
 nodecheck=`which node`
 if [ "$nodecheck" = "" ]
 then
@@ -23,18 +24,20 @@ then
    npm install -g elm-format
 fi
 
-check1=`which http-server`
-if [ "$check1" = "" ]
+httpserver=`which http-server`
+if [ "$httpserver" = "" ]
 then
    npm install -g http-server
 fi
 
+echo "Creating folder structure..."
 PROJECT_NAME=$1
 mkdir $PROJECT_NAME
 cd $PROJECT_NAME
 mkdir dist
 mkdir src
 
+echo "Creating shell scripts..."
 cat << EOF >dev
 #!/usr/bin/env bash
 open http://localhost:8000
@@ -59,6 +62,7 @@ cd ..
 EOF
 chmod +x prod
 
+echo "Creating html wrapper files..."
 cat <<EOF >index.html
 <!doctype html>
 <html lang="en-US">
@@ -97,6 +101,7 @@ cat <<EOF >dist/index.html
 </html>
 EOF
 
+echo "Creating hello world elm file..."
 cat <<EOF >src/main.elm
 import Html exposing (text)
 
@@ -104,6 +109,7 @@ main =
     text "hello, world!"
 EOF
 
+echo "Packaging..."
 elm-package install --yes
 touch style.css
 
@@ -116,3 +122,4 @@ run options:
   build -> build production version in dist
   prod  -> to build and run a dist version
 EOF
+echo "Finished..."
