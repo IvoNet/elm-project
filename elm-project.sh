@@ -68,7 +68,7 @@ cat <<EOF >index.html
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>IvoNet - elm</title>
+    <title>IvoNet - elm - reactor</title>
     <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
@@ -86,7 +86,7 @@ cat <<EOF >dist/index.html
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>IvoNet - elm</title>
+    <title>IvoNet - elm - dist</title>
     <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
