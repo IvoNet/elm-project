@@ -1,6 +1,6 @@
 # elm project
 
-This simple script creates a very basic [elm](http://elm-lang.org/) project.
+This simple script creates a basic [elm](http://elm-lang.org/) project with some plumbing already done.
 
 ## Prerequisites:
 
