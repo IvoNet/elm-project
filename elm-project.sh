@@ -100,6 +100,18 @@ cat <<EOF >dist/index.html
 </body>
 </html>
 EOF
+cat <<EOF > ./.gitignore
+### IntelliJ
+.idea
+
+### macOS
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+### elm
+elm-stuff
+EOF
 
 echo "Creating hello world elm file..."
 cat <<EOF >src/main.elm
