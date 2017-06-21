@@ -20,8 +20,21 @@ elmcheck=`which elm`
 if [ "$elmcheck" = "" ]
 then
    npm install -g elm
+fi
+elmcheck=`which elm-oracle`
+if [ "$elmcheck" = "" ]
+then
    npm install -g elm-oracle
+fi
+elmcheck=`which elm-format`
+if [ "$elmcheck" = "" ]
+then
    npm install -g elm-format
+fi
+elmcheck=`which elm-css`
+if [ "$elmcheck" = "" ]
+then
+   npm install -g elm-css
 fi
 
 httpserver=`which http-server`
@@ -34,7 +47,7 @@ echo "Creating folder structure..."
 PROJECT_NAME=$1
 mkdir $PROJECT_NAME
 cd $PROJECT_NAME
-mkdir dist
+mkdir resources
 mkdir src
 
 echo "Creating shell scripts..."
@@ -47,20 +60,27 @@ chmod +x dev
 
 cat <<EOF >build
 #!/usr/bin/env bash
-elm-make src/main.elm --output dist/main.js
-cp -f *.css ./dist/
+mkdir target
+elm-make src/main.elm --output target/main.js
+cp -f resources/* ./target/
 EOF
 chmod +x build
 
 cat <<EOF >prod
 #!/usr/bin/env bash
 build
-cd dist
+cd target
 open http://localhost:8080
 http-server
 cd ..
 EOF
 chmod +x prod
+
+cat <<EOF >clean
+#!/usr/bin/env bash
+rm -rf target
+EOF
+chmod +x clean
 
 echo "Creating html wrapper files..."
 cat <<EOF >index.html
@@ -69,7 +89,7 @@ cat <<EOF >index.html
 <head>
     <meta charset="UTF-8">
     <title>IvoNet - elm - reactor</title>
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="resources/style.css"/>
 </head>
 <body>
 <script type="text/javascript" src="/_compile/src/main.elm"></script>
@@ -81,12 +101,12 @@ cat <<EOF >index.html
 </html>
 EOF
 
-cat <<EOF >dist/index.html
+cat <<EOF >resources/index.html
 <!doctype html>
 <html lang="en-US">
 <head>
     <meta charset="UTF-8">
-    <title>IvoNet - elm - dist</title>
+    <title>IvoNet - elm</title>
     <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
@@ -100,6 +120,7 @@ cat <<EOF >dist/index.html
 </body>
 </html>
 EOF
+
 cat <<EOF > ./.gitignore
 ### IntelliJ
 .idea
@@ -111,6 +132,7 @@ cat <<EOF > ./.gitignore
 
 ### elm
 elm-stuff
+target
 EOF
 
 echo "Creating hello world elm file..."
@@ -123,7 +145,7 @@ EOF
 
 echo "Packaging..."
 elm-package install --yes
-touch style.css
+touch resources/style.css
 
 cat <<EOF
 The project has been created here:
@@ -131,7 +153,7 @@ The project has been created here:
 so first change to that folder...
 run options:
   dev   -> to start elm in reactor mode
-  build -> build production version in dist
-  prod  -> to build and run a dist version
+  build -> build production version in target
+  prod  -> to build and run a target version
 EOF
 echo "Finished..."
